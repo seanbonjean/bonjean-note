@@ -1,4 +1,5 @@
 # 一些Linux命令
+* `passwd`修改密码
 * `apt install`和`apt-get install`：安装软件
 * `sudo`超级用户执行
 * `su`改变用户(switch user)，如`su root`改变用户为root
