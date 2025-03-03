@@ -33,6 +33,19 @@
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
 
+## systemctl
+
+* `status`查看状态
+* `list-units`查看所有服务 | 条件查询示例：`systemctl list-units --type=target --all | grep suspend`
+* `enable`开机自启
+* `disable`禁止开机自启
+* `start`启动
+* `stop`停止
+* `restart`重启
+* `reload`重新加载
+* `mask`屏蔽服务，屏蔽后无法启动
+* `unmask`取消屏蔽
+
 ## 软件包管理相关
 
 安装软件： `apt install` 、 `yum install` 、 `dpkg -i` 等（根据不同的包管理器选择）
