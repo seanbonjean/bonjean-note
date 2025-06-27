@@ -51,8 +51,9 @@ ssh 192.168.1.11
 
 .ssh目录通常包含以下文件：
 
-* `known_hosts`：保存了信任的已知服务器公钥
-* `authorized_keys`：保存了允许通过公钥认证免密登录到服务器的客户端公钥
+* `config`：（作为客户端）记录了连接到服务器的默认配置
+* `known_hosts`：（作为客户端）保存了信任的已知服务器公钥
+* `authorized_keys`：（作为服务器）保存了允许通过公钥认证免密登录到服务器的客户端公钥
 * `id_rsa.pub`、`id_ed25519.pub`等：客户端使用的公钥，用于解密和验证签名
 * `id_rsa`、`id_ed25519`等：客户端使用的私钥，用于签名和加密
 
@@ -74,7 +75,33 @@ ssh-keygen -t ed25519
 
 通过 `sudo ssh-keygen -A` 命令生成服务器使用的公私钥对，并保存在 `/etc/ssh` 目录下
 
-## sshd_config文件
+## ~/.ssh/config文件
+
+当需要经常连接到某台服务器时，可以配置config文件
+
+```config
+Host myserver  # 设置主机别名，可以通过ssh myserver命令直接连接
+  HostName 192.168.X.X  # 主机地址，可以是IP或域名
+  Port 22  # 端口号
+  User user  # 用户名
+  IdentityFile ~/.ssh/id_rsa  # 指定私钥文件路径，私钥的密码短语（如有）会在连接时询问（你不会觉得密码短语能明文存在这吧？）
+  # windows下路径：C:\Users\用户名\.ssh\私钥文件名
+  # linux下路径：~/.ssh/私钥文件名
+  IdentitiesOnly yes  # 仅使用IdentityFile指定的密钥，不尝试加载其他密钥
+  ForwardAgent yes  # 允许连接到的远程主机使用本地主机上的私钥连接其他主机
+  # 例如：在远程主机执行git pull时，能直接使用本地主机的Github私钥
+```
+
+使用 `ssh myserver` 命令，根据config中的配置直接连接到服务器
+
+## /etc/ssh/sshd_config文件
+
+***注意：*** 先检查是否安装了openssh-server，不然找不到sshd_config文件
+
+```bash
+apt search openssh-server
+apt install openssh-server
+```
 
 在 `/etc/ssh/sshd_config` 文件中，可以配置连接到该服务器的一些设置，比如：
 
@@ -87,7 +114,7 @@ ssh-keygen -t ed25519
 * `PubkeyAuthentication yes` 是否允许公钥认证
 * `ChallengeResponseAuthentication no` 是否允许挑战响应认证（不影响公钥认证，因为公钥认证是通过对挑战进行签名来验证客户端身份的，没有“响应”）
 
-注意这个文件是在 `/etc/ssh` 目录下的，而不是在用户的家目录下的 `.ssh` 目录下；配置文件是 `sshd` 服务的配置文件，而不是 `ssh` 客户端的配置文件
+注意这个文件是在 `/etc/ssh` 目录下的，而不是在用户的家目录下的 `.ssh` 目录下；配置文件是 `sshd` 服务的配置文件，而不是 `ssh` 客户端的配置文件 `ssh_config`
 
 ## 常用命令（客户端）
 
