@@ -19,6 +19,7 @@
 * `cd`改变当前目录
 * `mkdir`创建新目录
 * `cp`复制
+* `mv`移动或重命名（源路径和目标路径相同，仅文件名不同，即为重命名）
 * `rm`删除
 
 ## 日常使用
@@ -29,9 +30,44 @@
 * `netstat -a`显示所有网络连接
 * `whoami`显示当前用户
 * `who`显示当前登录到该机器的所有用户
+* `id`显示当前用户id、用户组id等信息
+* `cwd`显示当前工作目录的绝对路径
 * `xz -d`、`tar -xf`、`tar jxvf`一些解压命令
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
+
+## 文件管理
+
+* `mount /dev/sda1 /mnt/udisk0`临时挂载设备（如U盘），关机后失效。修改`/etc/fstab`文件以实现开机自动挂载
+* `udisksctl unmount -b /dev/sda1`卸载文件系统
+* `udisksctl power-off -b /dev/sda`关闭设备电源（弹出U盘）
+* `lsof /mnt/udisk0`查看文件被哪个进程占用
+* `fdisk -l`查看磁盘分区信息
+* `fdisk`修改磁盘分区表
+* `lsblk`列出块设备信息
+* `lsblk -f`列出块设备信息，带磁盘uuid（用于在`/etc/fstab`中配置磁盘挂载）
+* `df -h`查看磁盘使用情况
+* `chmod`修改文件权限，查阅：https://www.runoob.com/linux/linux-comm-chmod.html
+* `chown user[:group] /path/to/file`修改文件所有者
+* `chgrp group /path/to/file`修改文件所属用户组
+
+### /etc/fstab文件
+
+`/etc/fstab` 文件用于配置开机自动挂载的设备，格式如下：
+
+```
+<file system> <mount point> <type> <options> <dump> <pass>
+UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
+```
+
+磁盘设备UUID建议通过 `lsblk -f` 命令查看，也可以通过 `blkid` 命令查看
+
+其中：
+* `options` 参数可以设置多个，用逗号分隔，`defaults`表示以默认参数`rw, suid, dev, exec, auto, nouser, async`挂载。后面的参数会覆盖前面的defaults参数，例如，`defaults,ro`表示挂载的该磁盘只读
+* `dump` 字段表示是否需要被dump命令备份， `0` 表示不需要， `1` 表示需要，通常根文件系统 `/` 设为1，其余为0
+* `pass` 字段表示是否需要在系统启动时被fsck命令检查，`0`表示不检查，`1`表示最先检查，`2`表示在设为1的磁盘之后检查，通常根文件系统 `/` 设为1，其余为2或0
+
+一般磁盘设为 `defaults 0 2` 即可
 
 ## systemctl
 
