@@ -103,11 +103,24 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 
 ## 软件包管理相关
 
-安装软件： `apt install` 、 `yum install` 、 `dpkg -i` 等（根据不同的包管理器选择）
-卸载软件： `apt remove` 、 `yum remove` 、 `dpkg -r` 等
-升级软件： `apt upgrade` 、 `yum upgrade`
+（根据不同的包管理器选择）  
+搜索软件（根据大概的名字，从软件源中查询某个软件包的确切名字）： `apt search` 、 `yum search` 、 `dpkg -l | grep` 等  
+安装软件： `apt install` 、 `yum install` 、 `dpkg -i` 等  
+卸载软件： `apt remove` 、 `yum remove` 、 `dpkg -r` 等  
+升级软件： `apt upgrade` 、 `yum upgrade` 等  
+更新软件源： `apt update` 、 `yum update` 等
 
-更新软件源： `apt update`
+### apt源配置
+
+配置文件在 `/etc/apt/sources.list`
+
+（各种发行版都可选）
+* 中科大源：https://mirrors.ustc.edu.cn/help/ubuntu.html
+* 清华源：https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
+* 阿里源：https://developer.aliyun.com/mirror/
+* 网易源：https://mirrors.163.com/.help/ubuntu.html
+
+更新apt源后，运行： `sudo apt update`
 
 ## Makefile编译相关
 
