@@ -101,7 +101,9 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 * `sudo systemctl set-default multi-user.target`设置默认启动级别
 * `sudo systemctl isolate multi-user.target`切换到指定启动级别
 
-## 软件包管理相关
+## 软件管理
+
+### 包管理器
 
 （根据不同的包管理器选择）  
 搜索软件（根据大概的名字，从软件源中查询某个软件包的确切名字）： `apt search` 、 `yum search` 、 `dpkg -l | grep` 等  
@@ -110,7 +112,7 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 升级软件： `apt upgrade` 、 `yum upgrade` 等  
 更新软件源： `apt update` 、 `yum update` 等
 
-### apt源配置
+#### apt源配置
 
 配置文件在 `/etc/apt/sources.list`
 
@@ -122,7 +124,41 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 
 更新apt源后，运行： `sudo apt update`
 
-## Makefile编译相关
+### 切换同一软件的多个安装版本
+
+* `update-alternatives --list java`查看某个工具的多个可替换安装版本
+* `update-alternatives --config java`列出所有可替换版本并让用户选择版本进行切换
+* `update-alternatives --display java`列出所有符号链接（太详细，建议直接用--list）
+* `update-alternatives --auto java`将版本选择设置为自动模式
+* `update-alternatives --set editor /usr/bin/vim.basic`进入手动模式，并指定默认运行该版本
+
+某一个安装版本后标明的“自动模式”意味着：如果当前是自动模式(Status: auto)，则系统自动选择安装版本运行，而该版本将会是系统选择的版本  
+如果当前是手动模式(Status: manual)，则标明的“自动模式”没有意义
+
+#### 手动添加/删除一个版本
+
+ `update-alternatives --install <主链接路径> <名字> <候选程序路径> <优先级>`
+
+`update-alternatives --remove <名字> <候选程序路径>` （只是从alternatives管理中删除，不会删除可执行文件）
+
+* 主链接路径：一般是/usr/bin/java，是用户实际使用的命令路径（命令会去/usr/bin下寻找java）
+* 名字：这是alternatives管理器内部使用的名字（例如java）
+* 候选程序路径：你要添加的实际程序路径，可执行的文件已安装在此处
+* 优先级：决定自动模式下的选择，数字越大，优先级越高
+
+例如：
+
+```bash
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-21-openjdk-amd64/bin/java 100
+```
+
+意思是：把/usr/lib/jvm/java-21-openjdk-amd64/bin/java添加为java的一个候选实现，并建立与/usr/bin/java的管理链接。如果在自动模式下，优先级为100
+
+运行后，系统会创建符号链接：
+* /etc/alternatives/java -> /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+* /usr/bin/java -> /etc/alternatives/java
+
+## Makefile编译
 
 * `make -j(核心数)`根据Makefile编译项目，可以指定使用的核心数量。运行make时，如果报错形如bison: not found，那就sudo apt install bison，谁not found就装谁；如果是fatal error: libelf.h: No such file or directory这种，装libelf-dev，软件包跟个-dev的是对应的开发包，开发包就是带头文件和静态库的
 
