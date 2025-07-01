@@ -37,6 +37,7 @@
 * `whoami`显示当前用户
 * `who`显示当前登录到该机器的所有用户
 * `id`显示当前用户id(UID)、用户组id(GID)等信息
+* `hostname`显示当前主机名
 * `cwd`显示当前工作目录的绝对路径
 * `passwd`修改密码
 * `useradd -m username`创建用户
