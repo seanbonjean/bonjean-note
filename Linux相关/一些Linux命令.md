@@ -24,18 +24,26 @@
 
 ## 日常使用
 
-* `passwd`修改密码
 * `top`/`ps -aux`查看当前系统进程
 * `htop`查看当前系统进程（更高级）
 * `netstat -a`显示所有网络连接
 * `lsof -i:80`查看正在使用端口的进程
-* `whoami`显示当前用户
-* `who`显示当前登录到该机器的所有用户
-* `id`显示当前用户id、用户组id等信息
-* `cwd`显示当前工作目录的绝对路径
 * `xz -d`、`tar -xf`、`tar jxvf`一些解压命令
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
+
+## 用户与主机
+
+* `whoami`显示当前用户
+* `who`显示当前登录到该机器的所有用户
+* `id`显示当前用户id(UID)、用户组id(GID)等信息
+* `cwd`显示当前工作目录的绝对路径
+* `passwd`修改密码
+* `useradd -m username`创建用户
+* `userdel -r username`删除用户
+* `usermod -aG groupname username`添加用户到组，例如：`usermod -aG sudo username`添加到sudo组
+* `usermod -u newUID username` `usermod -g newGID username`更改用户UID和GID
+* `hostnamectl set-hostname xxx`更改主机名，重启后生效（将会更改/etc/hostname文件，并处理与主机名相关的其他系统配置）
 
 ## 文件管理
 
