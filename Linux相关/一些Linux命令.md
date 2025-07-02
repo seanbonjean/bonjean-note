@@ -28,7 +28,7 @@
 * `htop`查看当前系统进程（更高级）
 * `netstat -a`显示所有网络连接
 * `lsof -i:80`查看正在使用端口的进程
-* `xz -d`、`tar -xf`、`tar jxvf`一些解压命令
+* `xz -d`、`tar -xf`、`tar jxvf`、`unzip`一些解压命令
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
 
