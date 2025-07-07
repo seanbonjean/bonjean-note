@@ -61,6 +61,7 @@
 * `userdel -r username`删除用户
 * `usermod -aG groupname username`添加用户到组，例如：`usermod -aG sudo username`添加到sudo组
 * `usermod -u newUID username` `usermod -g newGID username`更改用户UID和GID
+* `chsh -s /bin/bash`设置用户默认shell（如果sudo运行，更改的是root的默认shell），通过`cat /etc/shells`查看可用shell列表；`chsh -s /bin/bash username`更改其他用户的默认shell（如果用户没有权限更改默认shell，用sudo运行并使用username指定用户）
 * `hostnamectl set-hostname xxx`更改主机名，重启后生效（将会更改/etc/hostname文件，并处理与主机名相关的其他系统配置）
 
 ## 文件管理
