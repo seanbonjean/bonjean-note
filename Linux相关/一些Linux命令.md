@@ -208,6 +208,26 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 * `sudo systemctl set-default multi-user.target`设置默认启动级别
 * `sudo systemctl isolate multi-user.target`切换到指定启动级别
 
+## wget和curl
+
+wget和curl都可用于下载文件。wget更适合下载文件，支持递归下载、断点续传；而curl更侧重于构建和发送自定义请求数据包，并且支持多种协议
+
+### wget
+
+* `wget http://example.com/file.txt`下载文件
+* wget无法上传文件
+* `wget -c http://example.com/file.txt`断点续传
+
+### curl
+
+* `curl -O http://example.com/file.txt`下载文件
+* `curl -o newfile.txt http://example.com/file.txt`下载文件并指定保存的文件名
+* `curl -T file.txt ftp://example.com/ --user username:password`FTP协议上传文件
+* `curl http://example.com`发送一个HTTP GET请求
+* `curl -X POST -d "param1=value1&param2=value2" http://example.com/resource`发送一个HTTP POST请求，`-d`指定POST的参数
+* `curl -L http://example.com`需要显式地允许重定向
+* `curl -H "Content-Type: application/json" http://example.com`设置HTTP请求头
+
 ## 软件管理
 
 ### 包管理器
