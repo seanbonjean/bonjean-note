@@ -11,6 +11,7 @@ conda可以提供python虚拟环境，虚拟环境之间是隔离的，因此解
 ### 环境管理
 
 * `conda env list` 列出所有环境
+* `conda list -n <env_name>`列出该环境内安装的包
 * `conda create -n <env_name> python=3.7` 创建环境
 * `conda create --name new_env --clone old_env`克隆一个已有环境
 * `conda remove -n <env_name> --all` 删除环境
@@ -19,6 +20,7 @@ conda可以提供python虚拟环境，虚拟环境之间是隔离的，因此解
 
 ### 环境内包管理
 
+* `conda list` 列出当前环境内安装的包（一定要在环境内执行，否则会列出所有环境的所有包）
 * `conda install <package_name>` 安装包
 * `conda install -c conda-forge <package_name>=1.2.3` 安装包，使用conda-forge源，指定版本号
 * `conda update <package_name>` 更新包
