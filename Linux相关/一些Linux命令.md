@@ -66,6 +66,7 @@
 
 ## 文件管理
 
+* `ln -s /path/to/file /path/to/link`创建软链接（可以是文件或目录）
 * `mount /dev/sda1 /mnt/udisk0`临时挂载设备（如U盘），关机后失效。修改`/etc/fstab`文件以实现开机自动挂载
 * `udisksctl unmount -b /dev/sda1`卸载文件系统
 * `udisksctl power-off -b /dev/sda`关闭设备电源（弹出U盘）
