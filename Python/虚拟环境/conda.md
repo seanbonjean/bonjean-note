@@ -2,7 +2,8 @@
 
 conda可以提供python虚拟环境，虚拟环境之间是隔离的，因此解决了python版本冲突、pip包冲突等问题
 
-可以安装anaconda来获取conda环境。anaconda是一个打包了conda环境和其他各种python工具的软件
+可以安装anaconda来获取conda环境。anaconda是一个打包了conda环境和其他各种python工具的软件  
+对于存储空间受限的设备，更推荐安装miniconda或换用python自带的venv
 
 修改 `.condarc` 文件配置conda镜像源
 
