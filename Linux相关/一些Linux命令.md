@@ -32,6 +32,19 @@
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
 
+## 终端复用（后台多窗口）
+
+`screen` 命令可以在一个终端连接里开启并同时存在多个虚拟的终端会话，并且在关闭终端后，程序依然在会话中保持运行
+
+* `screen -ls`列出当前所有会话
+* `screen -R [session name]`新建并进入一个会话
+* `screen -r [session id/name]`回到一个已有的会话（如果只存在一个会话，可以省略session id/name）
+* `screen -d -r [session id/name]`回到一个已有但attached的会话（比如当你连接在这个session上时断开了ssh连接，此时session仍然处于attached状态，需要先detach再attach）
+
+在session内时的命令由 `Ctrl + a` 开头：
+* `Ctrl + a d`将当前会话detach（后台挂起）
+* `Ctrl + a ?`显示帮助
+
 ## 监控命令结果
 
 有时候需要监控系统状态，观察某个命令输出的变化，需要借助 `watch` 命令来重复执行某个命令，并实时刷新显示结果
@@ -79,7 +92,8 @@
 * `lsblk -f`列出块设备信息，带磁盘uuid（用于在`/etc/fstab`中配置磁盘挂载）
 * `df -h`查看磁盘使用情况
 * `du -h`查看当前路径下所有文件夹大小，设置`--max-depth=1`将递归限制在当前目录
-* `du -h filename`查看文件大小
+* `du -ah`查看当前路径下所有文件夹和文件大小，递归限制同上
+* `du -h filename`查看某个文件大小
 * `chmod`修改文件权限，查阅：https://www.runoob.com/linux/linux-comm-chmod.html
 * `chown user[:group] /path/to/file`修改文件所有者
 * `chgrp group /path/to/file`修改文件所属用户组
