@@ -187,7 +187,7 @@
 UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 ```
 
-磁盘设备UUID建议通过 `lsblk -f` 命令查看，也可以通过 `blkid` 命令查看
+修改fstab后，通过 `sudo mount -a` 挂载fstab中没有被挂载的和挂载情况与fstab中不一致的设备（但是挂载点属于root），或 `reboot` 后自然会按fstab挂载；并注意挂载后使用 `chown` 等命令修改用户权限
 
 其中：
 * `options` 参数可以设置多个，用逗号分隔，`defaults`表示以默认参数`rw, suid, dev, exec, auto, nouser, async`挂载。后面的参数会覆盖前面的defaults参数，例如，`defaults,ro`表示挂载的该磁盘只读
@@ -195,6 +195,33 @@ UUID=xxx-xx... /mnt/pool0 ext4 defaults 0 2
 * `pass` 字段表示是否需要在系统启动时被fsck命令检查，`0`表示不检查，`1`表示最先检查，`2`表示在设为1的磁盘之后检查，通常根文件系统 `/` 设为1，其余为2或0
 
 一般磁盘设为 `defaults 0 2` 即可
+
+磁盘设备UUID建议通过 `lsblk -f` 命令查看，也可以通过 `blkid` 命令查看；如果没有UUID，说明磁盘没有**格式化**，方法见下文
+
+#### 新建分区并格式化
+
+如果没有UUID，说明磁盘没有**格式化**；分区和格式化是不同的概念：先修改分区表有了分区，才能对分区进行格式化，格式化为指定的文件系统
+
+首先使用 `fdisk` 命令新建分区，在设备（如 `sda` ）上创建分区（如 `sda1` ）
+
+```bash
+sudo fdisk /dev/sda
+p（查看分区表）
+n（添加新分区）
+输入分区号（sda1就填1，或者直接回车默认按顺序新建，有sda1就会新建sda2）
+起始和结束扇区这些直接回车默认
+p（查看分区表，当前未实施的改动也会显示）
+w（保存分区表并退出fdisk）
+或q（不保存直接退出）
+```
+
+然后使用 `mkfs` 命令格式化分区：
+
+```bash
+sudo mkfs.ext4 /dev/sda1
+```
+
+分区的文件系统类型可以修改为想要的类型，除了FAT32使用 `mkfs.vfat` 外，其他类型都是直接使用本名（如 `mkfs.xfs` 、 `mkfs.ntfs` 、 `mkfs.exfat` 等）
 
 ## systemctl
 
