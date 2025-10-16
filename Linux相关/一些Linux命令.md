@@ -279,7 +279,8 @@ wget和curl都可用于下载文件。wget更适合下载文件，支持递归�
 ### 包管理器
 
 （根据不同的包管理器选择）  
-搜索软件（根据大概的名字，从软件源中查询某个软件包的确切名字）： `apt search` 、 `yum search` 、 `dpkg -l | grep` 等  
+搜索软件（根据大概的名字，从软件源中查询某个软件包的确切名字）： `apt search` 、 `yum search` 等  
+搜索本地软件（dpkg数据库）： `dpkg -l | grep` （ `ii` 表示已安装； `rc` 表示曾安装过，卸载后残留配置文件；其他状态可以通过直接运行 `dpkg -l` 查看抬头说明）  
 安装软件： `apt install` 、 `yum install` 、 `dpkg -i` 等  
 卸载软件： `apt remove` 、 `yum remove` 、 `dpkg -r` 等  
 升级软件： `apt upgrade` 、 `yum upgrade` 等  
