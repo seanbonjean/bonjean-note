@@ -91,8 +91,8 @@
 * `lsblk`列出块设备信息
 * `lsblk -f`列出块设备信息，带磁盘uuid（用于在`/etc/fstab`中配置磁盘挂载）
 * `df -h`查看磁盘使用情况
-* `du -h`查看当前路径下所有文件夹大小，设置`--max-depth=1`将递归限制在当前目录
-* `du -ah`查看当前路径下所有文件夹和文件大小，递归限制同上
+* `du -h`查看当前路径下所有文件夹大小，设置`--max-depth=1`（或简写为`-d1`）将递归限制在当前目录
+* `du -ah`查看当前路径下所有文件夹***和文件***大小，递归限制同上，可写为`du -ahd1`
 * `du -h filename`查看某个文件大小
 * `chmod`修改文件权限，查阅：https://www.runoob.com/linux/linux-comm-chmod.html
 * `chown user[:group] /path/to/file`修改文件所有者
