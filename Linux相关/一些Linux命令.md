@@ -62,6 +62,17 @@
 
 例如： `watch -n 1 -d "ps aux | grep java"`
 
+## 模糊查找
+
+`fzf` 命令是一个基于 fuzzy matching 的命令行筛选工具，可以快速筛选出符合要求的结果
+
+读取从管道输入的数据源后， `fzf` 提供一个交互界面等待用户输入想要查找的关键字，方向键选择，回车键选中并返回匹配的行
+
+几个使用场景：
+* 搜索命令历史：`history | fzf`
+* 搜索由`find`过滤后的文件：`find . -type f | fzf`
+* 搜索文件并用vim打开：`vim $(ls|fzf)`
+
 ## 用户与主机
 
 * `whoami`显示当前用户
@@ -81,6 +92,12 @@
 
 ## 文件管理
 
+* `diff file1 file2`比较两个文件，分别显示差异（不显示相同处，没有差异时不显示任何信息），加`-u`参数后输出一份完整文件（包括相同内容）并在差异处显示差异
+* `diff -r path1 path2`递归比较两个目录，显示里面文件名的差异
+* `rsync -avh source/ destination/`增量同步`source`文件夹到`destination`下（形成`destination/source/`），`destination`文件夹中有但`source`中没有的文件不会被删除
+* `rsync -avh --delete source/ destination/`同步并删除`destination`中的多余文件（即镜像同步）
+* `rsync -avh --dry-run source/ destination/`模拟同步，只显示同步过程中会进行的所有增删等操作，不进行实际同步
+* `rsync -avh /path/to/source/ user@remotehost:/path/to/destination/`远程同步，将文件同步到远程主机，支持断点续传，例如：`rsync -avh ~/Documents/ admin@192.168.1.100:/home/admin/backup/`，反过来也可以，还可以以本机为跳板将一个远程同步到另一个远程
 * `ln -s /path/to/file /path/to/link`创建软链接（可以是文件或目录）
 * `mount /dev/sda1 /mnt/udisk0`临时挂载设备（如U盘），关机后失效。修改`/etc/fstab`文件以实现开机自动挂载
 * `udisksctl unmount -b /dev/sda1`卸载文件系统
@@ -94,6 +111,7 @@
 * `du -h`查看当前路径下所有文件夹大小，设置`--max-depth=1`（或简写为`-d1`）将递归限制在当前目录
 * `du -ah`查看当前路径下所有文件夹***和文件***大小，递归限制同上，可写为`du -ahd1`
 * `du -h filename`查看某个文件大小
+* `ncdu filepath`一个交互式的磁盘空间使用情况查看器（`ncdu`默认查看当前目录）
 * `chmod`修改文件权限，查阅：https://www.runoob.com/linux/linux-comm-chmod.html
 * `chown user[:group] /path/to/file`修改文件所有者
 * `chgrp group /path/to/file`修改文件所属用户组
