@@ -11,6 +11,12 @@ swapon --show
 
 ## 创建swap
 
+### 创建swap分区
+
+需要在硬盘分区时就准备好swap分区，因此这里不介绍相关方法。具体实现可以参考arch linux的安装指南
+
+### 创建swap文件
+
 假设在根目录下创建一个2G的swap文件
 
 ```bash
