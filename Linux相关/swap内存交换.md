@@ -52,3 +52,15 @@ sudo sysctl -w vm.swappiness=60
 ```
 
 设置永久有效的swappiness：修改 `/etc/sysctl.conf` 中的 `vm.swappiness=60`
+
+## 禁用swap
+
+### 临时禁用swap
+
+```bash
+sudo swapoff -a
+```
+
+### 永久禁用swap
+
+注释掉 `/etc/fstab` 中关于swap的行（例如: `/swap.img none sw swap 0 0` ）
