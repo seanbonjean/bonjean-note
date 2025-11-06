@@ -63,4 +63,4 @@ sudo swapoff -a
 
 ### 永久禁用swap
 
-注释掉 `/etc/fstab` 中关于swap的行（例如: `/swap.img none sw swap 0 0` ）
+注释掉 `/etc/fstab` 中关于swap的行（例如: `/swap.img none swap sw 0 0` ）
