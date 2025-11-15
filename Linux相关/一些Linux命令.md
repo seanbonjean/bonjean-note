@@ -32,6 +32,20 @@
 * `date`显示当前时间
 * `cal`显示当月日历`cal [month] [year]`显示指定年月日历`cal [year]`显示指定年全年日历
 
+## 终端快捷键
+
+* `Ctrl+A`：光标移动到行首
+* `Ctrl+E`：光标移动到行尾
+* `Ctrl+W`：删除光标前一个单词
+* `Ctrl+C`：终止当前命令
+* `Ctrl+S`：暂停当前命令
+* `Ctrl+Q`：恢复暂停的命令
+* `Ctrl+D`：退出终端（相当于`logout`、`exit`）
+* `Ctrl+R`：搜索历史命令，左右方向键进入该命令修改，上下方向键查看该命令历史附近的命令
+* `Ctrl+G`：退出搜索（如果用`Esc`退出，会和按方向键一样停留在该历史处）
+* `Ctrl+L`：清屏（相当于`clear`）
+* `Ctrl+Z`：（不推荐，推荐学习使用`screen`命令代替该功能）将当前命令暂停到后台，与`jobs`、`fg`、`bg`命令配合使用
+
 ## 终端复用（后台多窗口）
 
 `screen` 命令可以在一个终端连接里开启并同时存在多个虚拟的终端会话，并且在关闭终端后，程序依然在会话中保持运行
@@ -41,9 +55,9 @@
 * `screen -r [session id/name]`回到一个已有的会话（如果只存在一个会话，可以省略session id/name）
 * `screen -d -r [session id/name]`回到一个已有但attached的会话（比如当你连接在这个session上时断开了ssh连接，此时session仍然处于attached状态，需要先detach再attach）
 
-在session内时的命令由 `Ctrl + a` 开头：
-* `Ctrl + a d`将当前会话detach（后台挂起）
-* `Ctrl + a ?`显示帮助
+在session内时的命令由 `Ctrl + A` 开头：
+* `Ctrl + A D`将当前会话detach（后台挂起）
+* `Ctrl + A ?`显示帮助
 
 ## 监控命令结果
 
@@ -69,7 +83,7 @@
 读取从管道输入的数据源后， `fzf` 提供一个交互界面等待用户输入想要查找的关键字，方向键选择，回车键选中并返回匹配的行
 
 几个使用场景：
-* 搜索命令历史：`history | fzf`
+* 搜索命令历史：直接在终端`Ctrl+R`就可以搜索最近的命令（详见“终端快捷键”部分）；但如果命令比较久远，可以通过`history | fzf`找到后手动复制到终端执行
 * 搜索由`find`过滤后的文件：`find . -type f | fzf`
 * 搜索文件并用vim打开：`vim $(ls|fzf)`
 
