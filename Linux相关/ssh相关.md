@@ -94,6 +94,35 @@ Host myserver  # 设置主机别名，可以通过ssh myserver命令直接连接
 
 使用 `ssh myserver` 命令，根据config中的配置直接连接到服务器
 
+### 配置ssh-agent
+
+当使用密码管理器保存ssh密钥时，可能需要配置ssh-agent，使ssh客户端使用ssh-agent中的密钥进行登录
+
+例如，在 `~/.ssh/config` 中添加如下内容：
+
+```config
+Host github.com
+  IdentityAgent ~/.1password/agent.sock
+  IdentitiesOnly no
+```
+
+这是1Password宣传的配置方法，在开启1Password的ssh-agent服务时会自动提示你进行和上述类似的配置
+
+但为什么前面说是“可能需要配置”，因为还有一种更简单的方法，可以通过直接修改 `SSH_AUTH_SOCK` 环境变量来实现：
+
+```bash
+echo "export SSH_AUTH_SOCK=/home/<user>/.bitwarden-ssh-agent.sock" >> ~/.bashrc
+```
+
+这正是Bitwarden官方配置教程里的做法（注意flathub版的ssh-agent路径不同，请前往官网查询）只要 `~/.ssh/config` 中没有显式指定密钥文件或某个ssh-agent，ssh客户端就会使用 `SSH_AUTH_SOCK` 中提供的ssh-agent进行登录
+
+还要注意：如果是从1Password切换到Bitwarden，要记得清除掉1Password在systemd中注入的环境变量
+
+```bash
+systemctl --user show-environment | grep SSH_AUTH_SOCK
+systemctl --user unset-environment SSH_AUTH_SOCK
+```
+
 ## /etc/ssh/sshd_config文件
 
 ***注意：*** 先检查是否安装了openssh-server，不然找不到sshd_config文件
