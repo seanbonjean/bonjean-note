@@ -92,7 +92,7 @@ Host myserver  # 设置主机别名，可以通过ssh myserver命令直接连接
   # 例如：在远程主机执行git pull时，能直接使用本地主机的Github私钥
 ```
 
-使用 `ssh myserver` 命令，根据config中的配置直接连接到服务器
+使用 `ssh [主机别名]` 命令，根据config中的配置直接连接到服务器
 
 ### 配置ssh-agent
 
@@ -101,7 +101,7 @@ Host myserver  # 设置主机别名，可以通过ssh myserver命令直接连接
 例如，在 `~/.ssh/config` 中添加如下内容：
 
 ```config
-Host github.com
+Host github.com  # 或者直接 Host * 对所有主机别名或域名生效
   IdentityAgent ~/.1password/agent.sock
   IdentitiesOnly no
 ```
