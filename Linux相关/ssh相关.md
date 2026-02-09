@@ -94,6 +94,27 @@ Host myserver  # 设置主机别名，可以通过ssh myserver命令直接连接
 
 使用 `ssh [主机别名]` 命令，根据config中的配置直接连接到服务器
 
+### 配置跳板机
+
+跳板机登录是指：先通过ssh访问一台主机，再从这台主机通过ssh访问另一台主机（例如：通过暴露在公网的跳板机，访问内网服务器）
+
+可以通过config文件简化跳板机登录流程，示例如下：
+
+```config
+Host jump-server  # 跳板机
+  HostName 100.101.102.103
+  Port 22
+  User user
+
+Host target-server  # 想要访问的目标主机
+  HostName 192.168.1.100
+  Port 22
+  User user
+  ProxyJump jump-server  # 关键：根据这个字段指定跳板机
+```
+
+建议为跳板机和目标主机都设置免密登录，不然每次登录都要输入两个密码
+
 ### 配置ssh-agent
 
 当使用密码管理器保存ssh密钥时，可能需要配置ssh-agent，使ssh客户端使用ssh-agent中的密钥进行登录
