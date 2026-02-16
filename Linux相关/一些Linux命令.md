@@ -295,9 +295,17 @@ sudo mkfs.ext4 /dev/sda1
 一些常用命令：
 
 ```bash
-cpupower -c all frequency-set -g performance  # 设置所有CPU为性能模式
-cpupower -c all frequency-set -g powersave  # 设置所有CPU为节能模式
+cpupower -c all frequency-set -g performance  # 设置所有CPU频率为性能模式
+cpupower -c all frequency-set -g powersave  # 设置所有CPU频率为节能模式
+cpupower -c all frequency-set -f 2.4GHz # 设置CPU频率为2.4GHz
+cpupower -c all frequency-set -d 2.4GHz # 设置CPU最小频率为2.4GHz
+cpupower -c all frequency-set -u 2.4GHz # 设置CPU最大频率为2.4GHz
+cpupower -c 0 frequency-info  # 查看修改情况（只看CPU0是因为这个有点长）
+cpupower -c all set --perf-bias 7  # 设置处理器节能策略
+cpupower -c all info  # 查看处理器节能策略
 ```
+
+`--perf-bias` ( `-b` ) 选项的值范围从0到15，其中0是最优性能，15是最佳节能
 
 ## wget和curl
 
