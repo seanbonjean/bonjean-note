@@ -288,6 +288,17 @@ sudo mkfs.ext4 /dev/sda1
 * `sudo systemctl set-default multi-user.target`设置默认启动级别
 * `sudo systemctl isolate multi-user.target`切换到指定启动级别
 
+## cpupower
+
+一个用于控制CPU频率的命令，直接使用 `cpupower` 不带任何参数来查看使用方法，这里不赘述
+
+一些常用命令：
+
+```bash
+cpupower -c all frequency-set -g performance  # 设置所有CPU为性能模式
+cpupower -c all frequency-set -g powersave  # 设置所有CPU为节能模式
+```
+
 ## wget和curl
 
 wget和curl都可用于下载文件。wget更适合下载文件，支持递归下载、断点续传；而curl更侧重于构建和发送自定义请求数据包，并且支持多种协议
