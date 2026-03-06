@@ -95,15 +95,18 @@
 * `hostname`显示当前主机名
 * `hostnamectl set-hostname xxx`更改主机名，重启后生效（将会更改/etc/hostname文件，并处理与主机名相关的其他系统配置）
 * `cwd`显示当前工作目录的绝对路径
-* `passwd`修改密码
-* `useradd -m username`创建用户
+* `passwd`修改密码，root可使用`passwd username`修改指定用户的密码
+* `useradd -m username`创建用户，并默认加入同用户名的主组/初始组/基本组，`-m`参数为用户创建家目录。与`usermod`命令类似，可以用`-g`参数指定已有组作为其主组，用`-G`参数指定其（多个）附加组。创建用户后，务必先参考某位已有用户所属的组列表，为新用户加入其他的附加组，使其具有对应权限；再设置一个强密码
+* `adduser username`deb系自带的自动化脚本，能够创建用户并自动配置用户组和密码
 * `userdel -r username`删除用户
 * `usermod -l newusername username`更改用户登录名
 * `groups username`显示用户所属的所有组（组列表在/etc/group中；组和用户权限强相关，用户加入某个组后就能获取特定的权限，当某个程序报"Permission denied"时通常需要让用户加入某个组）
 * `groupadd groupname`创建组
 * `groupdel groupname`删除组
-* `usermod -aG groupname username`添加用户到组，例如：`usermod -aG sudo username`添加到sudo组
-* `usermod -u newUID username` `usermod -g newGID username`更改用户UID和GID
+* `usermod -aG groupname1[,groupname2,groupname3,...] username`添加用户到附加组，例如：`usermod -aG sudo username`添加到sudo组；只用`-G`参数将覆盖用户先前从属的附加组，只保留本条命令指定的附加组（不影响主组）
+* `usermod -u newUID username`更改用户UID（慎用，因为用户先前创建的文件仍然从属于旧的UID）
+* `usermod -g newgroupname/newGID username`更改用户主组名或主组GID（主组默认与用户名同名，但也可修改为其他已有组；主组将作为该用户新建文件时，文件从属的组）
+* `gpasswd -d username groupname`将用户移出组。`gpasswd`还可以为组设置密码、指定组管理员等，用户可以通过`newgrp`输入组密码临时加入组（仅当前shell有效），或由组管理员将用户永久加入或移出该组
 * `chsh -s /bin/bash`设置用户默认shell（如果sudo运行，更改的是root的默认shell），通过`cat /etc/shells`查看可用shell列表；`chsh -s /bin/bash username`更改其他用户的默认shell（如果用户没有权限更改默认shell，用sudo运行并使用username指定用户）
 
 ## 文件管理
