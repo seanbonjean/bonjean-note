@@ -8,28 +8,6 @@ ssh root@192.168.1.11
 
 因此，.ssh文件夹是用户级别的，root用户和其他用户都有，在各自的家目录下
 
-注：
-
-1. 所有user@host的格式都可以通过在hosts文件中添加别名来简化，若在hosts文件中添加如下内容：
-
-```bash
-192.168.1.11 myserver
-```
-
-则可以使用
-
-```bash
-ssh root@myserver
-```
-
-来连接到目标用户
-
-2. 用户A和用户B名称相同的情况下，可以简化为只使用机器名，如：
-
-```bash
-ssh 192.168.1.11
-```
-
 ## ssh连接过程
 
 虽然ssh连接不一定是连接服务器，但下文还是统一把被连接的机器称为服务器，以方便理解
@@ -115,9 +93,9 @@ Host target-server  # 想要访问的目标主机
 
 建议为跳板机和目标主机都设置免密登录，不然每次登录都要输入两个密码
 
-### 配置ssh-agent
+### 配置第三方ssh-agent
 
-当使用密码管理器保存ssh密钥时，可能需要配置ssh-agent，使ssh客户端使用ssh-agent中的密钥进行登录
+当使用密码管理器保存ssh密钥时，可能需要配置第三方ssh-agent，使ssh客户端使用密码管理器的ssh-agent中的密钥进行登录
 
 例如，在 `~/.ssh/config` 中添加如下内容：
 
@@ -146,6 +124,8 @@ systemctl --user unset-environment SSH_AUTH_SOCK
 
 ## /etc/ssh/sshd_config文件
 
+当作为服务器被连接时，需要配置sshd_config文件来设置ssh服务的相关参数
+
 ***注意：*** 先检查是否安装了openssh-server，不然找不到sshd_config文件
 
 ```bash
@@ -170,25 +150,30 @@ apt install openssh-server
 
 注意：确保.ssh目录权限为700（chmod -R 700 .ssh/），authorized_keys文件权限为600（chmod 600 .ssh/authorized_keys）
 
-把客户端公钥发送到服务器authorized_keys文件中（实现免密登录），过程中会需要输入目标服务器的密码
+`ssh-keygen -t ed25519 -C "文本注释"` ：生成公私钥对时，可以通过 `-C` 参数添加文本注释，通常用于标识该密钥的用途或所属用户
 
-```bash
-ssh-copy-id sean@192.168.1.11
-```
+`ssh-keygen -p -f [私钥文件路径]` ：修改私钥文件的密码短语，执行该命令后会提示输入旧密码短语和新密码短语
 
-或者手动把客户端公钥添加到服务器authorized_keys文件中（需要登录到服务器手动cat）
+`ssh-add [私钥文件路径]` ：添加私钥文件到ssh-agent中，这样ssh客户端就可以使用私钥进行登录
 
-建立ssh连接
+`ssh-add -L` ：以公钥的形式，列出ssh-agent中已添加的密钥
 
-```bash
-ssh sean@192.168.1.11
-```
+`ssh-add -l` ：以指纹的形式，列出ssh-agent中已添加的密钥
 
-scp复制本地文件到服务器（或者反过来），如果配置了免密登录，则不需要输入密码
+`ssh-add -d [私钥文件路径]` ：从ssh-agent中删除指定的密钥
 
-```bash
-scp /path/to/local/file sean@192.168.1.11:/path/to/remote/file
-```
+`ssh-add -D` ：从ssh-agent中删除所有已添加的密钥
+
+`ssh-copy-id sean@192.168.1.11` ：把客户端公钥发送到服务器authorized_keys文件中（实现免密登录），过程中会需要输入目标服务器的密码；不方便执行该命令时，也可以手动把客户端公钥添加到服务器authorized_keys文件中（需要登录到服务器手动cat）
+
+`ssh sean@192.168.1.11` ：建立ssh连接  
+注：
+1. `ssh sean@192.168.1.11 -p [端口号] -i [私钥文件路径]` 可以指定端口号和私钥文件路径
+2. 所有user@host的格式都可以通过在hosts文件中添加别名来简化。若在hosts文件中添加记录：`192.168.1.11 myserver`，则可以使用 `ssh root@myserver` 来连接到目标用户
+3. 用户A和用户B名称相同的情况下，可以简化为只使用机器名，如：`ssh 192.168.1.11`
+4. `ssh -T sean@192.168.1.11` ：测试ssh连接，会返回一个字符串，表示连接成功；例如：`ssh -T git@github.com` 会返回 Hi username! You've successfully authenticated, but GitHub does not provide shell access.（没错！ssh并不只是用于访问shell。在这里，它被用来验证用户身份，以允许访问GitHub提供的git服务；再比如scp等命令利用ssh进行文件传输等等）
+
+`scp /path/to/local/file sean@192.168.1.11:/path/to/remote/file` ：scp复制本地文件到服务器（或者反过来）；如果配置了免密登录，则不需要输入密码
 
 ### 端口转发
 
