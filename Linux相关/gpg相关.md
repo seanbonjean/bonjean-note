@@ -36,13 +36,15 @@ rsa4096/[KEY-ID]：前面为加密算法，后面为密钥的KEY-ID
 `gpg --edit-key [KEY-ID]` ：编辑密钥对：进入gpg交互界面
 
 1. `addkey`：添加子密钥
-2. `trust`：设置信任等级
-3. `sign`：为他人USER-ID签名
-4. `key [KEY-ID]`：选中密钥
-5. `delkey`：删除密钥 (需要先选中密钥)
-6. `expire`：重新设置主密钥有效期（选中子密钥以设置子密钥有效期）
-7. `list`：再次列出密钥对
-8. `save`：保存并退出
+2. `passwd`：修改密码短语 (主密钥决定密码短语，子密钥的密码短语继承自主密钥)
+3. `trust`：设置USER-ID的信任等级
+4. `adduid`：添加USER-ID (同一个密钥可以有多个USER-ID)
+5. `sign`：为他人USER-ID签名
+6. `key [KEY-ID]`：选中密钥
+7. `delkey`：删除密钥 (需要先选中密钥)
+8. `expire`：重新设置主密钥有效期（选中子密钥以设置子密钥有效期）
+9. `list`：再次列出密钥对
+10. `save`：保存并退出
 
 `gpg --armor --export [KEY-ID] > [公钥文件.asc]` ：导出公钥 (主/子密钥皆可)
 
