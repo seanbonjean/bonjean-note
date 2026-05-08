@@ -18,7 +18,9 @@ GPG (Gnu Privacy Guard) 是一个开源的加密软件，遵循OpenPGP (Pretty G
 
 `gpg --delete-keys [KEY-ID]` ：删除主公钥和关联的所有子公钥 (删除公钥的前提是对应私钥已被删除)
 
-`gpg --list-secret-keys --keyid-format=long` ：列出所有密钥对
+`gpg --list-keys --keyid-format=long` ：列出所有公钥
+
+`gpg --list-secret-keys --keyid-format=long` ：列出所有私钥
 
 列出的密钥中：  
 rsa4096/[KEY-ID]：前面为加密算法，后面为密钥的KEY-ID  
