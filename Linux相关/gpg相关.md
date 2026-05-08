@@ -35,15 +35,25 @@ rsa4096/[KEY-ID]：前面为加密算法，后面为密钥的KEY-ID
 
 1. `addkey`：添加子密钥
 2. `trust`：设置信任等级
-3. `key [KEY-ID]`：选中密钥
-4. `delkey`：删除密钥 (需要先选中密钥)
-5. `list`：再次列出密钥对
-6. `save`：保存并退出
+3. `sign`：为他人USER-ID签名
+4. `key [KEY-ID]`：选中密钥
+5. `delkey`：删除密钥 (需要先选中密钥)
+6. `expire`：重新设置主密钥有效期（选中子密钥以设置子密钥有效期）
+7. `list`：再次列出密钥对
+8. `save`：保存并退出
 
-`gpg --armor --export [KEY-ID] > [公钥文件]` ：导出公钥 (主/子密钥皆可)
+`gpg --armor --export [KEY-ID] > [公钥文件.asc]` ：导出公钥 (主/子密钥皆可)
 
-`gpg --armor --export-secret-keys [KEY-ID] > [私钥文件]` ：导出私钥
+`gpg --armor --export-secret-keys [KEY-ID] > [私钥文件.asc]` ：导出私钥
 
-`gpg --armor --export-secret-subkeys [KEY-ID] > [子私钥文件]` ：导出子私钥
+`gpg --armor --export-secret-subkeys [KEY-ID] > [子私钥文件.asc]` ：导出子私钥
 
 `gpg --import [密钥文件]` ：导入密钥
+
+## 吊销证书
+
+吊销证书用来撤销GPG key：如果私钥丢失、被泄露或者忘记密码，就可以用这个证书通知别人这个key已经不再可信  
+吊销证书不包含私钥，只包含KEY-ID和撤销签名的声明
+
+使用 `gpg --import [吊销证书.rev]` 导入吊销证书，就能标记该key已不再可信  
+然后，需要将吊销证书上传到公钥服务器： `gpg --keyserver hkps://keys.openpgp.org --send-keys [KEY-ID]` ，以告知他人；或将吊销证书直接分享给他人使用 `gpg --import [吊销证书.rev]` 导入
