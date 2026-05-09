@@ -93,6 +93,26 @@ Host target-server  # 想要访问的目标主机
 
 建议为跳板机和目标主机都设置免密登录，不然每次登录都要输入两个密码
 
+### ssh-agent / 为git远程仓库指定ssh密钥
+
+ssh-agent是ssh客户端的一个组件，用于管理ssh密钥，并自动将密钥传递给ssh客户端进行登录；在ssh-agent中添加带密码短语(passphrase)的密钥后，ssh客户端调用时无须再次输入passphrase
+
+Windows下的ssh-agent能够自动启动（通过Windows服务），并且 `ssh-add` 命令添加的密钥是持久性的  
+但是：  
+Linux下的ssh-agent大多需要手动启动（ `eval "$(ssh-agent -s)"` ）且生成的环境变量只在当前终端有效（难以提供给VSCode），并且 `ssh-add` 命令添加的密钥是临时的，重启即失效
+
+而且，ssh-agent（包括第三方ssh-agent）在登录验证时会按顺序一个个尝试所有密钥，如果ssh-agent中托管的密钥过多，而对应的密钥正好在顺序中靠后的位置，很可能达到对方ssh服务器的登录尝试次数上限，从而触发拒绝登录
+
+因此，与其使用ssh-agent传递密钥，不如编辑 `~/.ssh/config` 文件，为各个远程服务器直接指定对应密钥
+
+```config
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/私钥文件名
+  IdentitiesOnly yes
+```
+
 ### 配置第三方ssh-agent
 
 当使用密码管理器保存ssh密钥时，可能需要配置第三方ssh-agent，使ssh客户端使用密码管理器的ssh-agent中的密钥进行登录
@@ -154,7 +174,7 @@ apt install openssh-server
 
 `ssh-keygen -p -f [私钥文件路径]` ：修改私钥文件的密码短语，执行该命令后会提示输入旧密码短语和新密码短语
 
-`ssh-add [私钥文件路径]` ：添加私钥文件到ssh-agent中，这样ssh客户端就可以使用私钥进行登录
+`ssh-add [私钥文件路径]` ：添加私钥文件到ssh-agent中；ssh客户端在登录远程服务器时会尝试使用agent中的私钥进行登录
 
 `ssh-add -L` ：以公钥的形式，列出ssh-agent中已添加的密钥
 
