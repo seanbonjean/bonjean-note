@@ -1,17 +1,11 @@
 # README
 
-该项目存储本人学习计算机相关内容的笔记，在某些地方可能会有纰漏和不足，欢迎大家批评指正
+这个仓库存储了我的学习笔记，可能会有纰漏与不足，欢迎大家批评指正
 
-* 项目语言：markdown
-
-* 版本控制：git
-
-* 作者：sean-bonjean
-
-* Blog: bjweb.top
+* 作者：Sean Bonjean (aka Bojin Xiang & Aikawa Kyosuke)
 
 * E-mail：sean-bonjean@outlook.com
 
-* 贡献者：暂无
+* Blog: bjweb.top
 
 * 版权说明：转载请标明出处
